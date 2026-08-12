@@ -10,7 +10,12 @@ Built for Makerere University Business School, architected to expand.
 
 ---
 
-## The problem
+## Live app
+
+**https://campus-orbit-delta.vercel.app**
+
+Hosted on Vercel, backed by Supabase (hosted project `nhorfibqbbumrjwjxiwb`).
+
 
 A student's campus activity is scattered and disappears. Events live in WhatsApp
 groups and on noticeboards. Internships circulate by word of mouth. Certifications

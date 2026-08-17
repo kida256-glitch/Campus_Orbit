@@ -35,13 +35,12 @@ export default async function MainLayout({
   const role = profile.role as Role;
 
   return (
-    <div className="flex min-h-screen bg-secondary/30">
+    <div className="flex min-h-screen bg-gradient-to-br from-slate-50 via-white to-orbit-50/30">
       <Sidebar role={role} />
 
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar profile={profile} />
 
-        {/* pb-24 clears the mobile tab bar. */}
         <main
           id="main"
           className="min-w-0 flex-1 px-4 pb-24 pt-6 sm:px-6 sm:pt-8 lg:pb-10"

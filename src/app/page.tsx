@@ -65,13 +65,16 @@ export default async function LandingPage() {
       <SiteHeader />
 
       <main id="main">
-        {/* ---------------------------------------------------------------- */}
-        {/* Hero                                                             */}
-        {/* ---------------------------------------------------------------- */}
-        <section className="relative overflow-hidden bg-mesh">
+        {/* ── Hero ─────────────────────────────────────────────── */}
+        <section className="relative overflow-hidden bg-mesh-strong">
+          {/* Floating decorative orbs */}
+          <div className="glow-orb pointer-events-none absolute -top-40 left-1/4 size-[500px] bg-orbit-400/10 animate-float-slow" aria-hidden />
+          <div className="glow-orb pointer-events-none absolute -bottom-20 right-0 size-[400px] bg-emeraldx-400/10 animate-float" aria-hidden />
+          <div className="glow-orb pointer-events-none absolute top-1/2 left-0 size-[300px] bg-orbit-600/8 animate-spin-reverse-slow" aria-hidden />
+
           <div className="container grid items-center gap-14 py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:py-24">
             <div className="animate-fade-up">
-              <Badge variant="outline" className="mb-6 bg-background/80 py-1">
+              <Badge variant="outline" className="mb-6 bg-white/80 py-1 backdrop-blur border-orbit-200 text-orbit-700 shadow-sm">
                 <Sparkles className="text-orbit-500" aria-hidden />
                 For every school, university &amp; college
               </Badge>
@@ -95,7 +98,7 @@ export default async function LandingPage() {
                     <ArrowRight aria-hidden />
                   </Link>
                 </Button>
-                <Button asChild size="lg" variant="outline">
+                <Button asChild size="lg" variant="outline" className="border-navy-200 hover:border-orbit-300">
                   <Link href="/signup">Build Your Portfolio</Link>
                 </Button>
               </div>
@@ -106,12 +109,16 @@ export default async function LandingPage() {
                     { label: "Live events", value: stats.events },
                     { label: "Open opportunities", value: stats.opportunities },
                     { label: "Tracked certifications", value: stats.certifications },
-                  ].map((stat) => (
-                    <div key={stat.label}>
+                  ].map((stat, i) => (
+                    <div
+                      key={stat.label}
+                      className="animate-fade-up"
+                      style={{ animationDelay: `${300 + i * 80}ms` }}
+                    >
                       <dt className="text-xs uppercase tracking-wide text-muted-foreground">
                         {stat.label}
                       </dt>
-                      <dd className="text-2xl font-semibold tracking-[-0.02em] text-navy-900">
+                      <dd className="text-2xl font-bold tracking-[-0.02em] text-navy-900 number-animate">
                         {stat.value}
                       </dd>
                     </div>
@@ -120,15 +127,18 @@ export default async function LandingPage() {
               ) : null}
             </div>
 
-            <div className="animate-fade-up lg:pl-4 [animation-delay:120ms]">
-              <PortfolioPreview />
+            {/* Portfolio preview — floats in from the right */}
+            <div className="animate-slide-in-right lg:pl-4" style={{ animationDelay: "150ms" }}>
+              <div className="relative">
+                {/* Glow ring behind the preview card */}
+                <div className="absolute -inset-4 rounded-3xl bg-orbit-gradient opacity-10 blur-2xl" aria-hidden />
+                <PortfolioPreview />
+              </div>
             </div>
           </div>
         </section>
 
-        {/* ---------------------------------------------------------------- */}
-        {/* The problem                                                      */}
-        {/* ---------------------------------------------------------------- */}
+        {/* ── The problem ──────────────────────────────────────── */}
         <section className="border-y border-border bg-secondary/40 py-16 sm:py-20">
           <div className="container">
             <div className="max-w-2xl">

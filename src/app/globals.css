@@ -2,72 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
-/*
- * CampusOrbit design tokens.
- * Deep navy text, blue primary accent, emerald secondary accent,
- * white / very light gray surfaces.
- */
 @layer base {
   :root {
     --background: 0 0% 100%;
     --foreground: 222 48% 12%;
-
     --card: 0 0% 100%;
     --card-foreground: 222 48% 12%;
-
     --popover: 0 0% 100%;
     --popover-foreground: 222 48% 12%;
-
-    /* Blue — primary accent */
     --primary: 219 92% 58%;
     --primary-foreground: 0 0% 100%;
-
-    /* Very light gray surface */
     --secondary: 216 33% 97%;
     --secondary-foreground: 222 44% 18%;
-
     --muted: 216 33% 97%;
     --muted-foreground: 219 14% 44%;
-
-    /* Emerald — secondary accent */
     --accent: 160 84% 39%;
     --accent-foreground: 0 0% 100%;
-
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-
     --border: 216 24% 91%;
     --input: 216 24% 89%;
     --ring: 219 92% 58%;
-
     --radius: 0.75rem;
   }
 
   .dark {
     --background: 222 52% 7%;
     --foreground: 216 33% 97%;
-
     --card: 222 46% 10%;
     --card-foreground: 216 33% 97%;
-
     --popover: 222 46% 10%;
     --popover-foreground: 216 33% 97%;
-
     --primary: 219 92% 62%;
     --primary-foreground: 222 52% 7%;
-
     --secondary: 222 34% 16%;
     --secondary-foreground: 216 33% 97%;
-
     --muted: 222 34% 16%;
     --muted-foreground: 217 18% 66%;
-
     --accent: 160 74% 44%;
     --accent-foreground: 222 52% 7%;
-
     --destructive: 0 66% 46%;
     --destructive-foreground: 0 0% 100%;
-
     --border: 222 30% 20%;
     --input: 222 30% 22%;
     --ring: 219 92% 62%;
@@ -90,7 +65,6 @@
     font-variant-ligatures: contextual;
   }
 
-  /* Visible, consistent focus ring for keyboard users. */
   :focus-visible {
     @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
   }
@@ -101,16 +75,20 @@
 }
 
 @layer utilities {
-  /* Subtle brand mesh used behind hero and dashboard headers. */
+  /* ── Background helpers ─────────────────────────────────────── */
   .bg-mesh {
     background-image: theme("backgroundImage.orbit-mesh");
+  }
+
+  .bg-mesh-strong {
+    background-image: theme("backgroundImage.orbit-mesh-strong");
   }
 
   .text-gradient {
     @apply bg-orbit-gradient bg-clip-text text-transparent;
   }
 
-  /* Thin, unobtrusive scrollbars inside scroll regions. */
+  /* ── Scrollbars ──────────────────────────────────────────────── */
   .scrollbar-slim {
     scrollbar-width: thin;
     scrollbar-color: hsl(var(--border)) transparent;
@@ -125,7 +103,7 @@
     @apply rounded-full bg-border;
   }
 
-  /* Skeleton shimmer used by loading states. */
+  /* ── Shimmer skeleton ────────────────────────────────────────── */
   .shimmer {
     position: relative;
     overflow: hidden;
@@ -144,6 +122,111 @@
     );
     animation: shimmer 1.6s infinite;
   }
+
+  /* ── Glassmorphism surface ───────────────────────────────────── */
+  .glass {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+  }
+
+  /* ── Card shine overlay ──────────────────────────────────────── */
+  .card-shine {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-shine::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: theme("backgroundImage.card-shine");
+    pointer-events: none;
+  }
+
+  /* ── Stagger delay helpers ───────────────────────────────────── */
+  .stagger-1 { animation-delay: 0ms; }
+  .stagger-2 { animation-delay: 60ms; }
+  .stagger-3 { animation-delay: 120ms; }
+  .stagger-4 { animation-delay: 180ms; }
+  .stagger-5 { animation-delay: 240ms; }
+  .stagger-6 { animation-delay: 300ms; }
+  .stagger-7 { animation-delay: 360ms; }
+  .stagger-8 { animation-delay: 420ms; }
+
+  /* ── Animated gradient border ────────────────────────────────── */
+  .gradient-border {
+    position: relative;
+    background-clip: padding-box;
+    border: 1px solid transparent;
+  }
+
+  .gradient-border::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      rgba(52, 121, 246, 0.5),
+      rgba(16, 185, 129, 0.3),
+      rgba(52, 121, 246, 0.15)
+    );
+    background-size: 200% 200%;
+    animation: gradient-shift 4s ease infinite;
+    z-index: -1;
+  }
+
+  /* ── Sidebar nav active indicator ─────────────────────────────── */
+  .nav-active-indicator {
+    position: relative;
+  }
+
+  .nav-active-indicator::before {
+    content: "";
+    position: absolute;
+    left: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 60%;
+    border-radius: 0 3px 3px 0;
+    background: theme("colors.orbit.500");
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .nav-active-indicator.active::before {
+    opacity: 1;
+  }
+
+  /* ── Hero glow orbs ──────────────────────────────────────────── */
+  .glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+  }
+
+  /* ── Number counter animation ────────────────────────────────── */
+  .number-animate {
+    animation: count-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
+/* ── Sonner toast overrides ──────────────────────────────────────────── */
+[data-sonner-toaster] [data-sonner-toast] {
+  border-radius: 1rem !important;
+  box-shadow:
+    0 4px 6px -1px rgba(16, 26, 46, 0.08),
+    0 20px 40px -12px rgba(16, 26, 46, 0.22) !important;
+  border: 1px solid rgba(216, 228, 245, 0.8) !important;
+}
+
+/* ── Radix dialog backdrop ───────────────────────────────────────────── */
+[data-radix-dialog-overlay] {
+  backdrop-filter: blur(4px) !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -157,16 +240,7 @@
   }
 }
 
-/* ---------------------------------------------------------------------------
- * Print
- *
- * "Download portfolio" is the browser's own print dialog, which offers Save as
- * PDF everywhere. These rules make that output CV-ready: chrome removed, cards
- * flattened to outlines, and gradients replaced so nothing renders as a black
- * block on paper.
- * ------------------------------------------------------------------------- */
 @media print {
-  /* App chrome has no place in a printed portfolio. */
   aside,
   nav,
   header[class*="sticky"],
@@ -175,52 +249,17 @@
   [data-sonner-toaster] {
     display: none !important;
   }
-
-  html,
-  body {
-    background: #fff !important;
-  }
-
-  body {
-    font-size: 11pt;
-  }
-
-  main {
-    padding: 0 !important;
-  }
-
-  /* Flatten elevation: shadows and tints cost ink and add nothing on paper. */
-  [class*="shadow"] {
-    box-shadow: none !important;
-  }
-
-  [class*="rounded"] {
-    border-radius: 4px !important;
-  }
-
-  .bg-orbit-gradient,
-  .bg-mesh,
-  [class*="bg-orbit-mesh"] {
+  html, body { background: #fff !important; }
+  body { font-size: 11pt; }
+  main { padding: 0 !important; }
+  [class*="shadow"] { box-shadow: none !important; }
+  [class*="rounded"] { border-radius: 4px !important; }
+  .bg-orbit-gradient, .bg-mesh, [class*="bg-orbit-mesh"] {
     background: #f2f5fa !important;
     background-image: none !important;
   }
-
-  /* Keep a portfolio section from splitting across a page break. */
-  section,
-  article,
-  li {
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  h1,
-  h2,
-  h3 {
-    break-after: avoid;
-    page-break-after: avoid;
-  }
-
-  /* Spell out link targets, since a printed page cannot be clicked. */
+  section, article, li { break-inside: avoid; page-break-inside: avoid; }
+  h1, h2, h3 { break-after: avoid; page-break-after: avoid; }
   a[href^="http"]::after {
     content: " (" attr(href) ")";
     font-size: 9pt;

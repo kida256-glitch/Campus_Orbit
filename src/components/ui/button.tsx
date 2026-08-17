@@ -6,23 +6,23 @@ import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow-sm hover:bg-orbit-700 active:scale-[0.98]",
+          "bg-primary text-primary-foreground shadow-sm hover:bg-orbit-700 hover:-translate-y-0.5 hover:shadow-soft active:translate-y-0 active:scale-[0.98]",
         brand:
-          "bg-orbit-gradient text-white shadow-glow hover:brightness-110 active:scale-[0.98]",
+          "bg-orbit-gradient text-white shadow-glow hover:brightness-110 hover:-translate-y-0.5 hover:shadow-glow-lg active:translate-y-0 active:scale-[0.98]",
         emerald:
-          "bg-accent text-accent-foreground shadow-sm hover:bg-emeraldx-700 active:scale-[0.98]",
+          "bg-accent text-accent-foreground shadow-sm hover:bg-emeraldx-700 hover:-translate-y-0.5 hover:shadow-glow-emerald active:translate-y-0 active:scale-[0.98]",
         outline:
-          "border border-input bg-background shadow-sm hover:bg-secondary hover:text-secondary-foreground",
+          "border border-input bg-background shadow-sm hover:bg-secondary hover:text-secondary-foreground hover:-translate-y-0.5 hover:border-orbit-200 active:translate-y-0",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-navy-100",
-        ghost: "hover:bg-secondary hover:text-secondary-foreground",
+          "bg-secondary text-secondary-foreground hover:bg-navy-100 hover:-translate-y-0.5 active:translate-y-0",
+        ghost: "hover:bg-secondary hover:text-secondary-foreground active:scale-[0.98]",
         destructive:
-          "bg-destructive text-destructive-foreground shadow-sm hover:bg-red-700",
+          "bg-destructive text-destructive-foreground shadow-sm hover:bg-red-700 hover:-translate-y-0.5 active:translate-y-0",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {

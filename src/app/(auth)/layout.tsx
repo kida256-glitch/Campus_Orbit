@@ -34,17 +34,23 @@ export default function AuthLayout({
 
       {/* Brand column — decorative, hidden on small screens */}
       <aside className="relative hidden overflow-hidden bg-navy-950 lg:flex lg:flex-col lg:justify-center">
+        {/* Animated glow orbs */}
         <div
           aria-hidden
-          className="absolute -right-24 -top-24 size-[26rem] rounded-full bg-orbit-600/25 blur-3xl"
+          className="glow-orb absolute -right-24 -top-24 size-[26rem] bg-orbit-600/25 animate-float-slow"
         />
         <div
           aria-hidden
-          className="absolute -bottom-32 -left-20 size-[24rem] rounded-full bg-emeraldx-500/20 blur-3xl"
+          className="glow-orb absolute -bottom-32 -left-20 size-[24rem] bg-emeraldx-500/20 animate-float"
+        />
+        <div
+          aria-hidden
+          className="glow-orb absolute left-1/2 top-1/2 size-[18rem] -translate-x-1/2 -translate-y-1/2 bg-orbit-800/15 animate-spin-reverse-slow"
+          style={{ borderRadius: "45% 55% 60% 40% / 50% 45% 55% 50%" }}
         />
 
         <div className="relative z-10 px-12 xl:px-16">
-          <OrbitMark spin className="size-12 rounded-2xl" />
+          <OrbitMark spin className="size-12 rounded-2xl animate-pulse-glow" />
 
           <h2 className="mt-8 max-w-md text-3xl font-semibold leading-tight tracking-[-0.02em] text-white xl:text-4xl">
             {APP_TAGLINE}
@@ -72,15 +78,17 @@ export default function AuthLayout({
                 title: "CampusOrbit AI",
                 body: "Personal guidance grounded in your real activity record.",
               },
-            ].map((item) => (
-              <li key={item.title} className="flex gap-4">
-                <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-xl bg-white/10">
+            ].map((item, i) => (
+              <li
+                key={item.title}
+                className="flex gap-4 animate-slide-in-right"
+                style={{ animationDelay: `${i * 100}ms` }}
+              >
+                <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm transition-all duration-300 hover:bg-white/20">
                   <item.icon className="size-4 text-orbit-200" aria-hidden />
                 </span>
                 <div>
-                  <p className="text-sm font-semibold text-white">
-                    {item.title}
-                  </p>
+                  <p className="text-sm font-semibold text-white">{item.title}</p>
                   <p className="mt-1 max-w-sm text-sm leading-relaxed text-navy-300">
                     {item.body}
                   </p>

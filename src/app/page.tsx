@@ -18,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/brand/logo";
 import { PortfolioPreview } from "@/components/landing/portfolio-preview";
+import { AnimatedShaderBackground } from "@/components/ui/animated-shader-background";
 
 export const metadata = {
   title: "CampusOrbit — Your campus life. Your opportunities. Your proof.",
@@ -66,39 +67,49 @@ export default async function LandingPage() {
 
       <main id="main">
         {/* ── Hero ─────────────────────────────────────────────── */}
-        <section className="relative overflow-hidden bg-mesh-strong">
-          {/* Floating decorative orbs */}
-          <div className="glow-orb pointer-events-none absolute -top-40 left-1/4 size-[500px] bg-orbit-400/10 animate-float-slow" aria-hidden />
-          <div className="glow-orb pointer-events-none absolute -bottom-20 right-0 size-[400px] bg-emeraldx-400/10 animate-float" aria-hidden />
-          <div className="glow-orb pointer-events-none absolute top-1/2 left-0 size-[300px] bg-orbit-600/8 animate-spin-reverse-slow" aria-hidden />
+        <section className="relative overflow-hidden bg-navy-950">
+          {/* Animated aurora shader — fills the entire hero */}
+          <AnimatedShaderBackground opacity={0.85} />
 
-          <div className="container grid items-center gap-14 py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:py-24">
+          {/* Subtle overlay to keep text readable */}
+          <div
+            className="pointer-events-none absolute inset-0 z-10"
+            style={{
+              background:
+                "linear-gradient(to bottom, rgba(10,16,32,0.2) 0%, rgba(10,16,32,0.1) 40%, rgba(10,16,32,0.55) 85%, rgba(10,16,32,0.85) 100%)",
+            }}
+            aria-hidden
+          />
+
+          <div className="container relative z-20 grid items-center gap-14 py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:py-24">
             <div className="animate-fade-up">
-              <Badge variant="outline" className="mb-6 bg-white/80 py-1 backdrop-blur border-orbit-200 text-orbit-700 shadow-sm">
-                <Sparkles className="text-orbit-500" aria-hidden />
+              <Badge variant="outline" className="mb-6 border-white/20 bg-white/10 py-1 text-white backdrop-blur">
+                <Sparkles className="text-orbit-300" aria-hidden />
                 For every school, university &amp; college
               </Badge>
 
-              <h1 className="text-4xl font-semibold leading-[1.08] tracking-[-0.03em] text-navy-900 sm:text-5xl lg:text-6xl">
+              <h1 className="text-4xl font-semibold leading-[1.08] tracking-[-0.03em] text-white sm:text-5xl lg:text-6xl">
                 Your campus life.
                 <br />
                 Your opportunities.
                 <br />
-                <span className="text-gradient">Your proof.</span>
+                <span className="bg-gradient-to-r from-orbit-300 via-emeraldx-300 to-white bg-clip-text text-transparent">
+                  Your proof.
+                </span>
               </h1>
 
-              <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+              <p className="mt-6 max-w-xl text-base leading-relaxed text-white/70 sm:text-lg">
                 {APP_DESCRIPTION}
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Button asChild size="lg" variant="brand">
+                <Button asChild size="lg" variant="brand" className="shadow-glow-lg">
                   <Link href="/discover">
                     Explore CampusOrbit
                     <ArrowRight aria-hidden />
                   </Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="border-navy-200 hover:border-orbit-300">
+                <Button asChild size="lg" className="border-white/20 bg-white/10 text-white backdrop-blur hover:bg-white/20 hover:border-white/30">
                   <Link href="/signup">Build Your Portfolio</Link>
                 </Button>
               </div>
@@ -115,10 +126,10 @@ export default async function LandingPage() {
                       className="animate-fade-up"
                       style={{ animationDelay: `${300 + i * 80}ms` }}
                     >
-                      <dt className="text-xs uppercase tracking-wide text-muted-foreground">
+                      <dt className="text-xs uppercase tracking-wide text-white/50">
                         {stat.label}
                       </dt>
-                      <dd className="text-2xl font-bold tracking-[-0.02em] text-navy-900 number-animate">
+                      <dd className="text-2xl font-bold tracking-[-0.02em] text-white number-animate">
                         {stat.value}
                       </dd>
                     </div>
@@ -127,11 +138,10 @@ export default async function LandingPage() {
               ) : null}
             </div>
 
-            {/* Portfolio preview — floats in from the right */}
+            {/* Portfolio preview */}
             <div className="animate-slide-in-right lg:pl-4" style={{ animationDelay: "150ms" }}>
               <div className="relative">
-                {/* Glow ring behind the preview card */}
-                <div className="absolute -inset-4 rounded-3xl bg-orbit-gradient opacity-10 blur-2xl" aria-hidden />
+                <div className="absolute -inset-4 rounded-3xl bg-orbit-gradient opacity-20 blur-2xl" aria-hidden />
                 <PortfolioPreview />
               </div>
             </div>

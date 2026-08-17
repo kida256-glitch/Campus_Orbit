@@ -30,6 +30,7 @@ import { EventCard } from "@/components/shared/event-card";
 import { OpportunityCard } from "@/components/shared/opportunity-card";
 import { RegistrationButtons } from "@/components/events/registration-buttons";
 import { ProgressButtons } from "@/components/opportunities/progress-buttons";
+import { AnimatedShaderBackground } from "@/components/ui/animated-shader-background";
 
 export const metadata = { title: "Dashboard" };
 
@@ -53,24 +54,8 @@ export default async function StudentDashboardPage() {
     <div className="space-y-8">
       {/* ── Hero header ─────────────────────────────────────────── */}
       <header className="animate-fade-up relative overflow-hidden rounded-3xl border border-orbit-100/80 bg-gradient-to-br from-orbit-600 via-orbit-700 to-navy-800 p-6 shadow-glow-lg sm:p-8">
-        {/* Mesh overlay */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-40"
-          style={{
-            backgroundImage:
-              "radial-gradient(800px 400px at 80% -20%, rgba(16,185,129,0.35), transparent 55%), radial-gradient(500px 300px at -10% 80%, rgba(255,255,255,0.08), transparent 60%)",
-          }}
-          aria-hidden
-        />
-        {/* Floating orb */}
-        <div
-          className="pointer-events-none absolute -right-16 -top-16 size-48 animate-float-slow rounded-full bg-white/[0.06] blur-2xl"
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute -bottom-12 left-1/3 size-36 animate-float rounded-full bg-emeraldx-400/10 blur-2xl"
-          aria-hidden
-        />
+        {/* Shader aurora behind the greeting */}
+        <AnimatedShaderBackground opacity={0.45} className="rounded-3xl" />
 
         <div className="relative">
           <h1 className="text-2xl font-semibold tracking-[-0.02em] text-white sm:text-3xl">

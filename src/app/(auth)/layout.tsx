@@ -3,6 +3,7 @@ import { ArrowLeft, BadgeCheck, Bot, Compass } from "lucide-react";
 
 import { APP_TAGLINE } from "@/lib/constants";
 import { Logo, OrbitMark } from "@/components/brand/logo";
+import { AnimatedShaderBackground } from "@/components/ui/animated-shader-background";
 
 export default function AuthLayout({
   children,
@@ -34,22 +35,30 @@ export default function AuthLayout({
 
       {/* Brand column — decorative, hidden on small screens */}
       <aside className="relative hidden overflow-hidden bg-navy-950 lg:flex lg:flex-col lg:justify-center">
-        {/* Animated glow orbs */}
+        {/* Aurora shader background */}
+        <AnimatedShaderBackground opacity={0.75} />
+
+        {/* Dark overlay so text stays readable */}
         <div
+          className="pointer-events-none absolute inset-0 z-10"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(10,16,32,0.45) 0%, rgba(10,16,32,0.25) 50%, rgba(10,16,32,0.55) 100%)",
+          }}
           aria-hidden
-          className="glow-orb absolute -right-24 -top-24 size-[26rem] bg-orbit-600/25 animate-float-slow"
-        />
-        <div
-          aria-hidden
-          className="glow-orb absolute -bottom-32 -left-20 size-[24rem] bg-emeraldx-500/20 animate-float"
-        />
-        <div
-          aria-hidden
-          className="glow-orb absolute left-1/2 top-1/2 size-[18rem] -translate-x-1/2 -translate-y-1/2 bg-orbit-800/15 animate-spin-reverse-slow"
-          style={{ borderRadius: "45% 55% 60% 40% / 50% 45% 55% 50%" }}
         />
 
-        <div className="relative z-10 px-12 xl:px-16">
+        {/* Animated glow orbs still layer on top */}
+        <div
+          aria-hidden
+          className="glow-orb absolute -right-24 -top-24 z-20 size-[26rem] bg-orbit-600/15 animate-float-slow"
+        />
+        <div
+          aria-hidden
+          className="glow-orb absolute -bottom-32 -left-20 z-20 size-[24rem] bg-emeraldx-500/10 animate-float"
+        />
+
+        <div className="relative z-30 px-12 xl:px-16">
           <OrbitMark spin className="size-12 rounded-2xl animate-pulse-glow" />
 
           <h2 className="mt-8 max-w-md text-3xl font-semibold leading-tight tracking-[-0.02em] text-white xl:text-4xl">

@@ -12,51 +12,59 @@ import {
   Sparkles,
 } from "lucide-react";
 
+import { unstable_cache } from "next/cache";
+
 import { APP_DESCRIPTION } from "@/lib/constants";
-import { createClient } from "@/lib/supabase/server";
+import { CACHE_TAGS, createPublicClient } from "@/lib/supabase/public";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/brand/logo";
 import { PortfolioPreview } from "@/components/landing/portfolio-preview";
-import { AnimatedShaderBackground } from "@/components/ui/animated-shader-background";
+import { AnimatedShaderBackground } from "@/components/ui/animated-shader-background-lazy";
 
 export const metadata = {
   title: "CampusOrbit — Your campus life. Your opportunities. Your proof.",
 };
 
 /**
- * Live counts for the landing page. These read only anon-visible rows
- * (approved events, published opportunities), so the numbers are real without
- * exposing anything private.
+ * Live counts for the landing page hero stats.
+ *
+ * Cached for 5 minutes in production. The numbers are decorative social proof
+ * rather than precision metrics, so slightly stale data is fine. The cache is
+ * invalidated when events or opportunities are moderated.
  */
-async function getPublicStats() {
-  try {
-    const supabase = await createClient();
+const getPublicStats = unstable_cache(
+  async () => {
+    try {
+      const supabase = createPublicClient();
 
-    const [events, opportunities, certifications] = await Promise.all([
-      supabase
-        .from("events")
-        .select("id", { count: "exact", head: true })
-        .in("status", ["approved", "completed"]),
-      supabase
-        .from("opportunities")
-        .select("id", { count: "exact", head: true })
-        .eq("status", "published"),
-      supabase
-        .from("certifications")
-        .select("id", { count: "exact", head: true }),
-    ]);
+      const [events, opportunities, certifications] = await Promise.all([
+        supabase
+          .from("events")
+          .select("id", { count: "exact", head: true })
+          .in("status", ["approved", "completed"]),
+        supabase
+          .from("opportunities")
+          .select("id", { count: "exact", head: true })
+          .eq("status", "published"),
+        supabase.from("certifications").select("id", { count: "exact", head: true }),
+      ]);
 
-    return {
-      events: events.count ?? 0,
-      opportunities: opportunities.count ?? 0,
-      certifications: certifications.count ?? 0,
-    };
-  } catch {
-    // The landing page must render even if the database is unreachable.
-    return null;
-  }
-}
+      return {
+        events: events.count ?? 0,
+        opportunities: opportunities.count ?? 0,
+        certifications: certifications.count ?? 0,
+      };
+    } catch {
+      return null;
+    }
+  },
+  ["landing-stats"],
+  {
+    revalidate: 300,
+    tags: [CACHE_TAGS.events, CACHE_TAGS.opportunities, CACHE_TAGS.certifications],
+  },
+);
 
 export default async function LandingPage() {
   const stats = await getPublicStats();

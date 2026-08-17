@@ -32,7 +32,9 @@ export function AnimatedShaderBackground({
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // Cap resolution to 1.5x to limit GPU work on high-DPI screens.
+    // 1.5x looks identical to 2x at shader distances, half the fragment count.
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.domElement.style.display = "block";
     container.appendChild(renderer.domElement);
@@ -99,12 +101,12 @@ export function AnimatedShaderBackground({
           vec4 o = vec4(0.0);
           float f = 2.0 + fbm(p + vec2(iTime * 5.0, 0.0)) * 0.5;
 
-          for (float i = 0.0; i < 35.0; i++) {
+          for (float i = 0.0; i < 28.0; i++) {
             v = p
               + cos(i * i + (iTime + p.x * 0.08) * 0.025 + i * vec2(13.0, 11.0)) * 3.5
               + vec2(sin(iTime * 3.0 + i) * 0.003, cos(iTime * 3.5 - i) * 0.003);
 
-            float tailNoise = fbm(v + vec2(iTime * 0.5, i)) * 0.3 * (1.0 - (i / 35.0));
+            float tailNoise = fbm(v + vec2(iTime * 0.5, i)) * 0.3 * (1.0 - (i / 28.0));
 
             vec4 auroraColors = vec4(
               0.1 + 0.3 * sin(i * 0.2 + iTime * 0.4),
@@ -118,7 +120,7 @@ export function AnimatedShaderBackground({
               * exp(sin(i * i + iTime * 0.8))
               / length(max(v, vec2(v.x * f * 0.015, v.y * 1.5)));
 
-            float thinnessFactor = smoothstep(0.0, 1.0, i / 35.0) * 0.6;
+            float thinnessFactor = smoothstep(0.0, 1.0, i / 28.0) * 0.6;
             o += currentContribution * (1.0 + tailNoise * 0.8) * thinnessFactor;
           }
 
@@ -132,14 +134,30 @@ export function AnimatedShaderBackground({
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
-    // ── Animation loop ──────────────────────────────────────────────
+    // ── Animation loop — capped at 60fps regardless of display refresh rate ──
     let frameId: number;
-    const animate = () => {
-      material.uniforms.iTime.value += 0.016;
-      renderer.render(scene, camera);
+    let lastTime = 0;
+    let paused = false;
+    const TARGET_MS = 1000 / 60; // 16.67ms per frame
+
+    const animate = (now: number) => {
       frameId = requestAnimationFrame(animate);
+      if (paused) return;
+
+      const elapsed = now - lastTime;
+      if (elapsed < TARGET_MS - 1) return; // skip frames on 120/144Hz
+      lastTime = now - (elapsed % TARGET_MS);
+
+      material.uniforms.iTime.value += Math.min(elapsed, 50) * 0.001; // delta in seconds, capped at 50ms
+      renderer.render(scene, camera);
     };
-    animate();
+    requestAnimationFrame(animate);
+
+    // Pause rendering when the tab is backgrounded — saves ~100% GPU load
+    const handleVisibility = () => {
+      paused = document.hidden;
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
 
     // ── Resize handler ──────────────────────────────────────────────
     const handleResize = () => {
@@ -155,6 +173,7 @@ export function AnimatedShaderBackground({
     return () => {
       cancelAnimationFrame(frameId);
       window.removeEventListener("resize", handleResize);
+      document.removeEventListener("visibilitychange", handleVisibility);
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }

@@ -30,7 +30,7 @@ import { EventCard } from "@/components/shared/event-card";
 import { OpportunityCard } from "@/components/shared/opportunity-card";
 import { RegistrationButtons } from "@/components/events/registration-buttons";
 import { ProgressButtons } from "@/components/opportunities/progress-buttons";
-import { AnimatedShaderBackground } from "@/components/ui/animated-shader-background";
+import { AnimatedShaderBackground } from "@/components/ui/animated-shader-background-lazy";
 
 export const metadata = { title: "Dashboard" };
 

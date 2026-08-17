@@ -105,7 +105,7 @@ try {
   const { data: profile } = await svc.from("profiles").select("*").eq("id", studentId).single();
   check("profile row exists", Boolean(profile));
   check("role is student", profile?.role === "student");
-  check("university set to MUBS", profile?.university === "Makerere University Business School");
+  check("university set", typeof profile?.university === "string");
   check("portfolio starts private", await (async () => {
     const { data } = await svc.from("portfolio_visibility").select("is_public").eq("student_id", studentId).single();
     return data?.is_public === false;

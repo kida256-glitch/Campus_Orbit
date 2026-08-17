@@ -5,38 +5,49 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "**.supabase.co" },
-      // Supabase Storage CDN for uploaded images
       { protocol: "https", hostname: "nhorfibqbbumrjwjxiwb.supabase.co" },
     ],
-    // Remote banners are decorative and rendered small; trimming the generated
-    // variants cuts optimisation work and cache churn.
     deviceSizes: [640, 828, 1080, 1200, 1920],
     imageSizes: [64, 128, 256, 384],
-    minimumCacheTTL: 2_678_400, // 31 days — these URLs are immutable
+    minimumCacheTTL: 2_678_400,
+    formats: ["image/avif", "image/webp"],
   },
 
   experimental: {
-    // Server Actions are used for every mutation in CampusOrbit.
     serverActions: { bodySizeLimit: "2mb" },
-
-    /*
-     * Rewrite barrel imports to direct module paths.
-     *
-     * `lucide-react` ships ~3,500 icons behind a single entry point. Without
-     * this, importing six icons pulls the whole barrel into the module graph,
-     * which was the largest single contributor to slow dev compiles. `recharts`
-     * and `date-fns` are large barrels for the same reason.
-     */
-    optimizePackageImports: ["lucide-react", "recharts", "date-fns"],
+    optimizePackageImports: ["lucide-react", "recharts", "date-fns", "three"],
+    // Preload critical data in parallel across route segments
+    parallelServerBuildTraces: true,
   },
 
-  // Strip console output from production bundles, keeping error/warn.
   compiler: {
     removeConsole:
       process.env.NODE_ENV === "production"
         ? { exclude: ["error", "warn"] }
         : false,
   },
+
+  // Aggressively cache static assets
+  headers: async () => [
+    {
+      source: "/_next/static/(.*)",
+      headers: [
+        {
+          key: "Cache-Control",
+          value: "public, max-age=31536000, immutable",
+        },
+      ],
+    },
+    {
+      source: "/(.*\\.(?:ico|svg|png|jpg|jpeg|webp|avif|woff2?))",
+      headers: [
+        {
+          key: "Cache-Control",
+          value: "public, max-age=2678400, stale-while-revalidate=86400",
+        },
+      ],
+    },
+  ],
 
   poweredByHeader: false,
   reactStrictMode: true,

@@ -3,7 +3,7 @@ import { ArrowLeft, BadgeCheck, Bot, Compass } from "lucide-react";
 
 import { APP_TAGLINE } from "@/lib/constants";
 import { Logo, OrbitMark } from "@/components/brand/logo";
-import { AnimatedShaderBackground } from "@/components/ui/animated-shader-background";
+import { AnimatedShaderBackground } from "@/components/ui/animated-shader-background-lazy";
 
 export default function AuthLayout({
   children,

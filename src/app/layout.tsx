@@ -48,6 +48,11 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={inter.variable}>
+      <head>
+        {/* Preconnect to Supabase so the first API call has a warm TCP connection */}
+        <link rel="preconnect" href="https://nhorfibqbbumrjwjxiwb.supabase.co" />
+        <link rel="dns-prefetch" href="https://nhorfibqbbumrjwjxiwb.supabase.co" />
+      </head>
       <body>
         {/* Keyboard users can jump straight past the navigation. */}
         <a

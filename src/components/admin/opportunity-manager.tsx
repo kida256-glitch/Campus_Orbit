@@ -16,6 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Field, FormError } from "@/components/forms/field";
 import { TagPicker } from "@/components/forms/tag-picker";
+import { ImagePicker } from "@/components/forms/image-picker";
 import {
   Dialog,
   DialogContent,
@@ -378,15 +379,13 @@ export function OpportunityManager({
               />
             </Field>
 
-            <Field label="Image URL" name="image" error={errors.image}>
-              <Input
-                id="image"
-                name="image"
-                type="url"
-                placeholder="https://"
-                defaultValue={editing?.image ?? ""}
-              />
-            </Field>
+            <ImagePicker
+              name="image"
+              label="Cover image"
+              defaultValue={editing?.image ?? ""}
+              hint="Optional. Upload or paste a link."
+              error={errors.image}
+            />
 
             <DialogFooter>
               <Button type="submit" loading={pending}>

@@ -5,6 +5,8 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "**.supabase.co" },
+      // Supabase Storage CDN for uploaded images
+      { protocol: "https", hostname: "nhorfibqbbumrjwjxiwb.supabase.co" },
     ],
     // Remote banners are decorative and rendered small; trimming the generated
     // variants cuts optimisation work and cache churn.

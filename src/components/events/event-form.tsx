@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Field, FormError } from "@/components/forms/field";
+import { ImagePicker } from "@/components/forms/image-picker";
 import { EVENT_CATEGORIES } from "@/lib/constants";
 import { submitEventAction, updateEventAction } from "@/lib/actions/events";
 import type { Tables } from "@/lib/types/database";
@@ -196,20 +197,13 @@ export function EventForm({ event }: { event?: Tables<"events"> }) {
             </Field>
           </div>
 
-          <Field
-            label="Banner image URL"
+          <ImagePicker
             name="bannerImage"
+            label="Banner image"
+            defaultValue={event?.banner_image ?? ""}
+            hint="Optional. Upload a photo or paste a URL. 16:9 works best — a colour gradient is used if none is provided."
             error={errors.bannerImage}
-            hint="Optional. A 16:9 image works best; a category gradient is used otherwise."
-          >
-            <Input
-              id="bannerImage"
-              name="bannerImage"
-              type="url"
-              defaultValue={event?.banner_image ?? ""}
-              placeholder="https://"
-            />
-          </Field>
+          />
 
           <Field
             label="External RSVP link"

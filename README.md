@@ -365,27 +365,64 @@ rows; scoped SQL retrieves more accurately than similarity search.
 
 ## Setup
 
-**Prerequisites:** Node 20+, Docker Desktop (for local Supabase).
+### Option 1 — Hosted Supabase (quickest, no Docker)
 
 ```bash
+git clone https://github.com/kida256-glitch/Campus_Orbit.git
+cd Campus_Orbit
 npm install
-npm run db:start      # first run pulls ~3–5 GB of images
-npm run start:prod    # build and serve
+
+# 1. Create a free project at https://supabase.com
+# 2. Copy .env.example to .env.local and fill in your Supabase URL and keys
+cp .env.example .env.local
+
+# 3. Push the schema and seed the admin account
+npm run sb -- link --project-ref <your-project-ref>
+npm run sb -- db push
+
+# 4. Build and serve
+npm run start:prod
 ```
+
+Open **http://localhost:3000**. Sign in with `benwaeldon@gmail.com` / `CampusOrbit!2026`.
+
+### Option 2 — Local Docker stack
+
+```bash
+git clone https://github.com/kida256-glitch/Campus_Orbit.git
+cd Campus_Orbit
+npm install
+
+# Copies the local dev keys (pre-filled in .env.example for Docker)
+cp .env.example .env.local
+# Edit NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321 and paste the local keys
+
+# First run pulls ~3–5 GB of Docker images, applies migrations, seeds admin
+npm run db:start
+
+# Build and serve
+npm run start:prod
+```
+
+Open **http://localhost:3000**.
+
+> **Use `npm run start:prod`, not `npm run dev`, unless you are editing code.**
+> `next dev` compiles routes on demand and measures 2–7 s per navigation.
+> A production build responds in 25–400 ms. See [`docs/performance.md`](docs/performance.md).
 
 ### Scripts
 
 | Command | Purpose |
 |---|---|
 | `npm run dev` | development server (Turbopack) |
-| `npm run start:prod` | **build and serve — 10–20× faster than dev** |
-| `npm run bench` | per-route latency benchmark |
+| `npm run start:prod` | **build and serve — recommended for judges** |
 | `npm run verify` | typecheck + lint + production build |
-| `npm run db:start` / `db:stop` | local Supabase stack |
+| `npm run bench` | per-route latency benchmark |
+| `npm run db:start` / `db:stop` | local Supabase stack (Docker) |
 | `npm run db:reset` | recreate schema and reseed |
-| `npm run db:test` | 55 RLS and trigger assertions |
+| `npm run db:test` | 55 RLS and trigger assertions (requires local Docker stack) |
 | `npm run test:smoke` | 29 route and role-access assertions |
-| `npm run test:flow` | 20 assertions walking the full demo journey |
+| `npm run test:flow` | 20 end-to-end flow assertions |
 
 ## Environment variables
 

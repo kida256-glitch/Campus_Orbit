@@ -17,7 +17,7 @@
         "db:reset": "npm run sb -- db reset",
         "db:status": "npm run sb -- status",
         "db:types": "npm run sb -- gen types typescript --local --schema public > src/lib/types/database.ts",
-        "db:test": "docker exec -i supabase_db_Final_hackathon_project psql -U postgres -d postgres -q -f - < supabase/tests/rls_checks.sql",
+        "db:test": "node scripts/db-test.mjs",
         "test:smoke": "node scripts/smoke.mjs",
         "test:flow": "node scripts/demo-flow.mjs",
         "bench": "node scripts/bench.mjs",

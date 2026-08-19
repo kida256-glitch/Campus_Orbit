@@ -20,6 +20,29 @@ every deployment instruction in this repository was produced by Kiro in response
 to a product brief from the project owner. No boilerplate was cloned. No external
 starter kit was used.
 
+### The `.kiro` directory
+
+The `.kiro` directory at the root of this repository is Kiro's working artifact —
+the evidence of how the project was planned and built:
+
+```
+.kiro/
+  specs/campusorbit/
+    requirements.md   ← the full product requirements Kiro defined from the brief
+    design.md         ← architecture decisions Kiro made (authorization in Postgres,
+                         portfolio-as-projection, RAG without vector store, etc.)
+    tasks.md          ← the 80-item implementation checklist Kiro worked through,
+                         all marked complete
+  steering/
+    project.md        ← always-on context file Kiro used to stay consistent across
+                         the entire session: conventions, file structure, design tokens
+```
+
+Kiro used the spec to track its own progress and the steering file to maintain
+conventions across hundreds of edits without drifting. The requirements and
+design documents were produced before any code was written and refined as
+decisions were made.
+
 ### What Kiro built
 
 **Planning and architecture**
